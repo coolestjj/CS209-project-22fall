@@ -10,7 +10,7 @@ public class MyTest {
 
     /**
      * @description Print the raw json
-     * @Jiajun Li
+     * @author Jiajun Li
      * @param url
      * @throws IOException
      */
