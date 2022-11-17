@@ -1,7 +1,9 @@
 package com.example.springproject.web;
 
-import com.example.springproject.domain.Repo;
-import com.example.springproject.service.RepoService;
+import com.example.springproject.dao.IssueMapper;
+import com.example.springproject.entity.Issue;
+import com.example.springproject.entity.Repo;
+import com.example.springproject.dao.RepoService;
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 
 
 @RestController
@@ -49,6 +52,22 @@ public class RepoController {
     @GetMapping("/getInfo1")
     public Repo getInfo_1(){
         return repoService.findInfo();
+    }
+
+    @Autowired
+    private IssueMapper issueMapper;
+
+    @GetMapping("/issue")
+    public ArrayList<Integer> getIssue() {
+        List<Issue> issues = new ArrayList<>();
+        issues = issueMapper.getIssue("open");
+
+        ArrayList<Integer> issueIds = new ArrayList<>();
+        for (Issue issue : issues) {
+            issueIds.add(issue.getId());
+        }
+        System.err.println("issueIds length: " + issueIds.size());
+        return issueIds;
     }
 
     @GetMapping("/getInfo2")

@@ -2,8 +2,11 @@ package com.example.springproject;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.example.springproject.domain.Issue;
+import com.example.springproject.dao.IssueMapper;
+import com.example.springproject.entity.Issue;
 import com.alibaba.fastjson.JSON;
+import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,6 +16,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+@MapperScan(value = "com.example.springproject.dao")
 public class MyTest {
 
     /**
@@ -49,15 +53,35 @@ public class MyTest {
         br.close();
     }
 
+    @Autowired
+    private IssueMapper issueMapper;
+
+    public ArrayList<Integer> getIssue() {
+        List<Issue> issues;
+        issues = issueMapper.getIssue("open");
+
+        ArrayList<Integer> issueIds = new ArrayList<>();
+        for (Issue issue : issues) {
+            issueIds.add(issue.getId());
+        }
+
+        return issueIds;
+    }
+
     public static void main(String[] args) throws IOException {
 
-        System.out.println("此为选定仓库的各个issues的open issue的id");
+//        System.out.println("此为选定仓库的各个issues的open issue的id");
         //API detail:
         //https://docs.github.com/en/rest/issues/issues#list-repository-issues
-        getMethod("https://api.github.com/repos/DiUS/java-faker/issues?page=3&per_page=100");
+//        getMethod("https://api.github.com/repos/DiUS/java-faker/issues?page=3&per_page=100");
         // page=3&per_page=100 即返回第三页，每页返回100个(最多100)
         //Username: DiUS
         //RepoName: java-faker
         //link: https://github.com/DiUS/java-faker
+        MyTest myTest = new MyTest();
+        ArrayList<Integer> ids = myTest.getIssue();
+        for (int i = 0 ; i < ids.size() ; i++) {
+            System.out.println(ids.get(i));
+        }
     }
 }
