@@ -1,4 +1,4 @@
-package com.example.springproject.dao;
+package com.example.springproject.service;
 
 import com.example.springproject.entity.Repo;
 

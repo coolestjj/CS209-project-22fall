@@ -1,9 +1,9 @@
-package com.example.springproject.web;
+package com.example.springproject.controller;
 
-import com.example.springproject.dao.IssueMapper;
+import com.example.springproject.mapper.IssueMapper;
 import com.example.springproject.entity.Issue;
 import com.example.springproject.entity.Repo;
-import com.example.springproject.dao.RepoService;
+import com.example.springproject.service.RepoService;
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +60,7 @@ public class RepoController {
     @GetMapping("/issue")
     public ArrayList<Integer> getIssue() {
         List<Issue> issues = new ArrayList<>();
-        issues = issueMapper.getIssue("open");
+        issues = issueMapper.getIssueByState("open");
 
         ArrayList<Integer> issueIds = new ArrayList<>();
         for (Issue issue : issues) {

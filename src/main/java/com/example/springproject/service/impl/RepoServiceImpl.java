@@ -1,8 +1,7 @@
-package com.example.springproject.service;
-
-import com.example.springproject.dao.RepoService;
+package com.example.springproject.service.impl;
 
 import com.example.springproject.entity.Repo;
+import com.example.springproject.service.RepoService;
 import org.springframework.stereotype.Service;
 
 @Service
