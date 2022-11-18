@@ -11,9 +11,9 @@
 
 <!--    批量插入语句-->
     <insert id="insertIssues">
-        insert into sqlpubcooljj.issue(id, state) values
-        <foreach item="issue" collection="issues" separator=",">
-        (#{issue.id}, #{issue.state});
+        insert into sqlpubcooljj.issue (id, state) values
+        <foreach item="issue" collection="list" separator=",">
+        (#{issue.id}, #{issue.state})
         </foreach>
     </insert>
 

@@ -4,41 +4,55 @@
     <meta charset="UTF-8">
     <title>Demo</title>
     <script src="https://s3.pstatp.com/cdn/expire-1-M/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.12/vue.min.js"></script>
 
 </head>
 <body>
-<h4>Demo Representation</h4>
-<table border="1">
-    <tr>
-        <th>Name</th>
-        <th>Developer_num</th>
-        <th>Most_active_developer</th>
-        <th>Open_issues</th>
-        <th>Close_issues</th>
-    </tr>
-    <tr>
-        <td id="1">var1</td>
-        <td id="2">var2</td>
-        <td id="3">var3</td>
-        <td id="4">var4</td>
-        <td id="5">var5</td>
-    </tr>
+<!--<h4>Demo Representation</h4>-->
+<!--<table border="1">-->
+<!--    <tr>-->
+<!--        <th>Name</th>-->
+<!--        <th>Developer_num</th>-->
+<!--        <th>Most_active_developer</th>-->
+<!--        <th>Open_issues</th>-->
+<!--        <th>Close_issues</th>-->
+<!--    </tr>-->
+<!--    <tr>-->
+<!--        <td id="1">var1</td>-->
+<!--        <td id="2">var2</td>-->
+<!--        <td id="3">var3</td>-->
+<!--        <td id="4">var4</td>-->
+<!--        <td id="5">var5</td>-->
+<!--    </tr>-->
 
-</table>
+<!--</table>-->
+<div id="box">
+    <button @click="handleClick">加入数据</button>
+
+</div>
 
 </body>
 <script>
 
-    var obj;
+    let vm = new Vue({
+        el: '#box',
+        methods: {
+            handleClick() {
+                $.ajax({
+                    url:'/issue/store-issues',
+                    methods: 'get',
+                    data: {
+                        url: 'https://api.github.com/repos/DiUS/java-faker/issues?&per_page=100'
+                    },
+                    success: function(data) {
+                        console.log(data)
+                    }
+                })
+            }
+        }
+    })
 
-    function main() {
-        print("getAndStore");
-        $.ajax({
-            url:'/issue/store-issues/https://api.github.com/repos/DiUS/java-faker/issues?page=3&per_page=100&state=closed',
-            method:'get'
-        })
-    }
-
+    // var obj;
     // function main(){
     //     $.ajax({
     //         url:'/repo/issue',	//这是后端接口的url
@@ -56,8 +70,8 @@
     //         },
     //     })
     // }
-
-    main();
+    //
+    // main();
 
 
 </script>
