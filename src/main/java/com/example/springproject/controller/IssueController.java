@@ -35,7 +35,7 @@ public class IssueController {
         return 1;
     }
 
-    @GetMapping("/get")
+    @GetMapping("/get-open-issues")
     public ArrayList<Integer> getIssue() {
         List<Issue> issues;
         issues = issueMapper.getIssueByState("open");
