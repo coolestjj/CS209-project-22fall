@@ -5,9 +5,14 @@
     <title>Demo</title>
     <script src="https://s3.pstatp.com/cdn/expire-1-M/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.12/vue.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+
 
 </head>
 <body>
+
 <!--<h4>Demo Representation</h4>-->
 <!--<table border="1">-->
 <!--    <tr>-->
@@ -26,25 +31,53 @@
 <!--    </tr>-->
 
 <!--</table>-->
-<div id="box">
-    <button @click="handleClick">加入数据</button>
 
-</div>
+    <div id="box">
+        <el-form :model="repoInfo" ref="repoInfo" label-width="100px" class="demo-repoInfo">
+            <el-form-item label="用户名">
+                <el-input v-model="repoInfo.ownerName" style="width: 300px">
+
+                </el-input>
+            </el-form-item>
+
+            <el-form-item label="仓库名">
+                <el-input v-model="repoInfo.repoName" style="width: 300px">
+
+                </el-input>
+            </el-form-item>
+        </el-form>
+
+        <el-button @click="handleClick" style="margin-left:100px" type="primary">加入数据</el-button>
+    </div>
 
 </body>
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
 <script>
 
     let vm = new Vue({
         el: '#box',
+        data: {
+            repoInfo: {
+                ownerName: '',
+                repoName: '',
+                repoAddress: ''
+            }
+        },
         methods: {
             handleClick() {
+                // eg: https://api.github.com/repos/DiUS/java-faker
+                this.repoAddress = 'https://api.github.com/repos/'+
+                    this.repoInfo.ownerName +
+                    '/' +
+                    this.repoInfo.repoName;
+                console.log(this.repoAddress);
                 $.ajax({
-                    url:'/issue/store-issues',
+                    url: '/issue/store-issues',
                     methods: 'get',
                     data: {
-                        url: 'https://api.github.com/repos/DiUS/java-faker/issues?&per_page=100'
+                        url: this.repoAddress + 'issues?&per_page=100'
                     },
-                    success: function(data) {
+                    success: function (data) {
                         console.log(data)
                     }
                 })
