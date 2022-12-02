@@ -70,12 +70,12 @@
                     this.repoInfo.ownerName +
                     '/' +
                     this.repoInfo.repoName;
-                console.log(this.repoAddress);
+                console.log(this.repoAddress + '/issues?per_page=100');
                 $.ajax({
                     url: '/issue/store-issues',
                     methods: 'get',
                     data: {
-                        url: this.repoAddress + 'issues?&per_page=100'
+                        url: this.repoAddress + '/issues?per_page=100'
                     },
                     success: function (data) {
                         console.log(data)

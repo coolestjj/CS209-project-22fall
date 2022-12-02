@@ -5,15 +5,15 @@
 <!--namespace=绑定一个对应的Dao/Mapper接口-->
 <mapper namespace="com.example.springproject.mapper.IssueMapper">
     <!--select查询语句,resultType是返回类型，id最好写的是接口中的方法名称-->
-    <select id="getIssue" resultType="com.example.springproject.entity.Issue">
+    <select id="getIssueByState" resultType="com.example.springproject.entity.Issue">
         select * from sqlpubcooljj.issue where state=#{state};
     </select>
 
 <!--    批量插入语句-->
     <insert id="insertIssues">
-        insert into sqlpubcooljj.issue(id, state) values
-        <foreach item="issue" collection="issues" separator=",">
-        (#{issue.id}, #{issue.state});
+        insert into sqlpubcooljj.issue (id, state) values
+        <foreach item="issue" collection="list" separator=",">
+        (#{issue.id}, #{issue.state})
         </foreach>
     </insert>
 

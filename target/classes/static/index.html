@@ -4,41 +4,88 @@
     <meta charset="UTF-8">
     <title>Demo</title>
     <script src="https://s3.pstatp.com/cdn/expire-1-M/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.12/vue.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+
 
 </head>
 <body>
-<h4>Demo Representation</h4>
-<table border="1">
-    <tr>
-        <th>Name</th>
-        <th>Developer_num</th>
-        <th>Most_active_developer</th>
-        <th>Open_issues</th>
-        <th>Close_issues</th>
-    </tr>
-    <tr>
-        <td id="1">var1</td>
-        <td id="2">var2</td>
-        <td id="3">var3</td>
-        <td id="4">var4</td>
-        <td id="5">var5</td>
-    </tr>
 
-</table>
+<!--<h4>Demo Representation</h4>-->
+<!--<table border="1">-->
+<!--    <tr>-->
+<!--        <th>Name</th>-->
+<!--        <th>Developer_num</th>-->
+<!--        <th>Most_active_developer</th>-->
+<!--        <th>Open_issues</th>-->
+<!--        <th>Close_issues</th>-->
+<!--    </tr>-->
+<!--    <tr>-->
+<!--        <td id="1">var1</td>-->
+<!--        <td id="2">var2</td>-->
+<!--        <td id="3">var3</td>-->
+<!--        <td id="4">var4</td>-->
+<!--        <td id="5">var5</td>-->
+<!--    </tr>-->
+
+<!--</table>-->
+
+    <div id="box">
+        <el-form :model="repoInfo" ref="repoInfo" label-width="100px" class="demo-repoInfo">
+            <el-form-item label="用户名">
+                <el-input v-model="repoInfo.ownerName" style="width: 300px">
+
+                </el-input>
+            </el-form-item>
+
+            <el-form-item label="仓库名">
+                <el-input v-model="repoInfo.repoName" style="width: 300px">
+
+                </el-input>
+            </el-form-item>
+        </el-form>
+
+        <el-button @click="handleClick" style="margin-left:100px" type="primary">加入数据</el-button>
+    </div>
 
 </body>
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
 <script>
 
-    var obj;
+    let vm = new Vue({
+        el: '#box',
+        data: {
+            repoInfo: {
+                ownerName: '',
+                repoName: '',
+                repoAddress: ''
+            }
+        },
+        methods: {
+            handleClick() {
+                // eg: https://api.github.com/repos/DiUS/java-faker
+                this.repoAddress = 'https://api.github.com/repos/'+
+                    this.repoInfo.ownerName +
+                    '/' +
+                    this.repoInfo.repoName;
+                console.log(this.repoAddress + '/issues?per_page=100');
+                $.ajax({
+                    url: '/issue/store-issues',
+                    methods: 'get',
+                    data: {
+                        url: this.repoAddress + '/issues?per_page=100'
+                    },
+                    success: function (data) {
+                        console.log(data)
+                    }
+                })
+            }
+        }
+    })
 
-    function main() {
-        print("getAndStore");
-        $.ajax({
-            url:'/issue/store-issues/https://api.github.com/repos/DiUS/java-faker/issues?page=3&per_page=100&state=closed',
-            method:'get'
-        })
-    }
-
+    // var obj;
     // function main(){
     //     $.ajax({
     //         url:'/repo/issue',	//这是后端接口的url
@@ -56,8 +103,8 @@
     //         },
     //     })
     // }
-
-    main();
+    //
+    // main();
 
 
 </script>
