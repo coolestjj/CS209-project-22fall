@@ -22,8 +22,8 @@ import java.util.List;
 @RequestMapping("/issue")
 public class IssueController {
 
-    @Autowired
-    private IssueMapper issueMapper;
+//    @Autowired
+//    private IssueMapper issueMapper;
 
     @Autowired
     private IssueService issueService;
@@ -36,9 +36,22 @@ public class IssueController {
     }
 
     @GetMapping("/get-open-issues")
-    public ArrayList<Integer> getIssue() {
+    public ArrayList<Integer> getOpenIssues() {
         List<Issue> issues;
-        issues = issueMapper.getIssueByState("open");
+        issues = issueService.getIssueByState("open");
+
+        ArrayList<Integer> issueIds = new ArrayList<>();
+        for (Issue issue : issues) {
+            issueIds.add(issue.getId());
+        }
+        System.err.println("issueIds length: " + issueIds.size());
+        return issueIds;
+    }
+
+    @GetMapping("/get-close-issues")
+    public ArrayList<Integer> getCloseIssues() {
+        List<Issue> issues;
+        issues = issueService.getIssueByState("closed");
 
         ArrayList<Integer> issueIds = new ArrayList<>();
         for (Issue issue : issues) {

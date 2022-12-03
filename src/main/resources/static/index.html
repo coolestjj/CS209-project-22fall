@@ -51,7 +51,6 @@
     </div>
 
 </body>
-<script src="https://unpkg.com/element-ui/lib/index.js"></script>
 <script>
 
     let vm = new Vue({
@@ -67,10 +66,11 @@
             handleClick() {
                 // eg: https://api.github.com/repos/DiUS/java-faker
                 this.repoAddress = 'https://api.github.com/repos/'
-                                    + this.repoInfo.ownerName
-                                    + '/'
-                                    + this.repoInfo.repoName;
+                    + this.repoInfo.ownerName
+                    + '/'
+                    + this.repoInfo.repoName;
                 console.log(this.repoAddress + '/issues?per_page=100');
+
                 $.ajax({
                     url: '/issue/store-issues',
                     methods: 'get',
@@ -83,7 +83,51 @@
                     }
                 })
 
-                console.log("inserted!")
+                $.ajax({
+                    url: '/issue/store-issues',
+                    methods: 'get',
+                    async: false,
+                    data: {
+                        url: this.repoAddress + '/issues?per_page=100&state=closed'
+                    },
+                    success: function (data) {
+                        console.log(data)
+                    }
+                })
+                // this.storeIssues();
+
+                console.log("inserted!");
+
+                // this.getOpenIssues();
+
+                console.log("Get!")
+            },
+
+            storeIssues() {
+
+                $.ajax({
+                    url: '/issue/store-issues',
+                    methods: 'get',
+                    async: false,
+                    data: {
+                        url: this.repoAddress + '/issues?per_page=100'
+                    },
+                    success: function (data) {
+                        console.log(data)
+                    }
+                })
+
+                $.ajax({
+                    url: '/issue/store-issues',
+                    methods: 'get',
+                    async: false,
+                    data: {
+                        url: this.repoAddress + '/issues?per_page=100&state=closed'
+                    },
+                    success: function (data) {
+                        console.log(data)
+                    }
+                })
 
                 $.ajax({
                     url: '/issue/get-open-issues',
@@ -92,8 +136,16 @@
                         console.log(data)
                     }
                 })
+            },
 
-                console.log("Get!")
+            getOpenIssues() {
+                $.ajax({
+                    url: '/issue/get-open-issues',
+                    methods: 'get',
+                    success: function (data) {
+                        console.log(data)
+                    }
+                })
             }
         }
     })
