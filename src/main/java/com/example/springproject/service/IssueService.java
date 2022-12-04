@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface IssueService {
 
-    List<Issue> getIssueByState(String state);
+    int getIssueByState(String state);
 
     void insertIssues(List<Issue> issues);
 }

@@ -57,18 +57,18 @@ public class RepoController {
     @Autowired
     private IssueMapper issueMapper;
 
-    @GetMapping("/issue")
-    public ArrayList<Integer> getIssue() {
-        List<Issue> issues = new ArrayList<>();
-        issues = issueMapper.getIssueByState("open");
-
-        ArrayList<Integer> issueIds = new ArrayList<>();
-        for (Issue issue : issues) {
-            issueIds.add(issue.getId());
-        }
-        System.err.println("issueIds length: " + issueIds.size());
-        return issueIds;
-    }
+//    @GetMapping("/issue")
+//    public ArrayList<Integer> getIssue() {
+//        List<Issue> issues = new ArrayList<>();
+//        issues = issueMapper.getIssueByState("open");
+//
+//        ArrayList<Integer> issueIds = new ArrayList<>();
+//        for (Issue issue : issues) {
+//            issueIds.add(issue.getId());
+//        }
+//        System.err.println("issueIds length: " + issueIds.size());
+//        return issueIds;
+//    }
 
     @GetMapping("/getInfo2")
     public ArrayList<String> getInfo_2() throws IOException {

@@ -3,13 +3,8 @@ package com.example.springproject.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.example.springproject.mapper.IssueMapper;
 import com.example.springproject.entity.Issue;
 import com.example.springproject.service.IssueService;
-import com.example.springproject.service.impl.IssueServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -17,13 +12,15 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/issue")
 public class IssueController {
-
-//    @Autowired
-//    private IssueMapper issueMapper;
 
     @Autowired
     private IssueService issueService;
@@ -36,29 +33,31 @@ public class IssueController {
     }
 
     @GetMapping("/get-open-issues")
-    public ArrayList<Integer> getOpenIssues() {
-        List<Issue> issues;
-        issues = issueService.getIssueByState("open");
-
-        ArrayList<Integer> issueIds = new ArrayList<>();
-        for (Issue issue : issues) {
-            issueIds.add(issue.getId());
-        }
-        System.err.println("issueIds length: " + issueIds.size());
-        return issueIds;
+    public int getOpenIssues() {
+//        List<Issue> issues;
+//        issues = issueService.getIssueByState("open");
+//
+//        ArrayList<Integer> issueIds = new ArrayList<>();
+//        for (Issue issue : issues) {
+//            issueIds.add(issue.getId());
+//        }
+//        System.err.println("issueIds length: " + issueIds.size());
+//        return issueIds;
+        return issueService.getIssueByState("open");
     }
 
     @GetMapping("/get-close-issues")
-    public ArrayList<Integer> getCloseIssues() {
-        List<Issue> issues;
-        issues = issueService.getIssueByState("closed");
-
-        ArrayList<Integer> issueIds = new ArrayList<>();
-        for (Issue issue : issues) {
-            issueIds.add(issue.getId());
-        }
-        System.err.println("issueIds length: " + issueIds.size());
-        return issueIds;
+    public int getCloseIssues() {
+//        List<Issue> issues;
+//        issues = issueService.getIssueByState("closed");
+//
+//        ArrayList<Integer> issueIds = new ArrayList<>();
+//        for (Issue issue : issues) {
+//            issueIds.add(issue.getId());
+//        }
+//        System.err.println("issueIds length: " + issueIds.size());
+//        return issueIds;
+        return issueService.getIssueByState("closed");
     }
 
     public List<Issue> getRawJson(String url) throws IOException {
@@ -94,8 +93,4 @@ public class IssueController {
         System.out.println(issues.size());
         return issues;
     }
-
-//    public static void main(String[] args) throws IOException {
-//        getRawJson("https://api.github.com/repos/DiUS/java-faker/issues?per_page=100");
-//    }
 }

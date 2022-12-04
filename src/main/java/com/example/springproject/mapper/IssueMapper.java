@@ -12,7 +12,7 @@ import java.util.List;
 public interface IssueMapper {
 
 //    @Select("select * from sqlpubcooljj.issue where state=#{state}")
-    List<Issue> getIssueByState(String state);
+    int getIssueByState(String state);
 
     void insertIssues(List<Issue> issues);
 

@@ -5,8 +5,8 @@
 <!--namespace=绑定一个对应的Dao/Mapper接口-->
 <mapper namespace="com.example.springproject.mapper.IssueMapper">
     <!--select查询语句,resultType是返回类型，id最好写的是接口中的方法名称-->
-    <select id="getIssueByState" resultType="com.example.springproject.entity.Issue">
-        select * from ljjcjava2.issue where state=#{state};
+    <select id="getIssueByState" resultType="int">
+        select count(*) from ljjcjava2.issue where state=#{state};
     </select>
 
 <!--    批量插入语句-->

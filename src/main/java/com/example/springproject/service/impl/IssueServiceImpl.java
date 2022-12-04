@@ -17,7 +17,7 @@ public class IssueServiceImpl implements IssueService {
 
 
     @Override
-    public List<Issue> getIssueByState(String state) {
+    public int getIssueByState(String state) {
         return issueMapper.getIssueByState(state);
     }
 
