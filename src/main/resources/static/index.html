@@ -48,16 +48,70 @@
     </el-form-item>
   </el-form>
 
-  <el-button @click="handleClick" style="margin-left:100px" type="primary">加入数据</el-button>
+  <el-button @click="handleClick" style="margin-left:100px" type="primary">确定</el-button>
 </div>
 
 <!--<div id="svgcontainer"></div>-->
-<div id="asas" style="width: 600px; height: 400px;"></div>
+<div id="issues" style="width: 600px; height: 400px;"></div>
 
+<div id="Commits" style="width: 1200px; height: 400px;"></div>
+
+<div id="top_developers" style="width: 600px; height: 400px;"></div>
 
 </body>
 
 <script>
+
+  var array = [[1, 2], [2, 3], [3, 7],[4,4],[5,5],[6,6],[7,7],[8,8],[9,9],[10,2],[11,3],[12,5]]
+  var myChart = echarts.init(document.getElementById("Commits"));
+  var option = {
+    title: {
+      text: "commit时间分布"
+    },
+    xAxis: {
+      type: 'category',
+    },
+    yAxis: {
+      type: 'value'
+    },
+    series: [
+      {
+        data: array,
+        type: 'line'
+      },
+    ]
+  };
+  myChart.setOption(option);
+
+  var developer_commit = [['a', 100], ['b', 3], ['c', 2]];
+  var barGraph = echarts.init(document.getElementById("top_developers"));
+  var option2 = {
+    title: {
+      text: "最多commit的开发者"
+    },
+    xAxis: {
+      type: 'category',
+    },
+    yAxis: {
+      type: 'value'
+    },
+    series: [
+      {
+        type: 'bar',
+        data: developer_commit,
+        itemStyle: {
+          normal: {
+            label: {
+              show: true,
+              position: 'top'
+            }
+          }
+        }
+      }
+    ]
+  }
+  barGraph.setOption(option2);
+
 
   let vm = new Vue({
     el: '#box',
@@ -73,8 +127,7 @@
     methods: {
       handleClick() {
         // eg: https://api.github.com/repos/DiUS/java-faker
-
-        this.repoAddress = 'https://api.github.com/repos/'
+        vm.repoAddress = 'https://api.github.com/repos/'
             + this.repoInfo.ownerName
             + '/'
             + this.repoInfo.repoName;
@@ -84,7 +137,7 @@
 
         this.getOpenIssues();
         this.getCloseIssues();
-        this.setPie('asas');
+        this.setPie('issues');
 
         console.log("Get!")
         console.log(this.openIssues);
@@ -157,6 +210,9 @@
           var myChart = echarts.init(document.getElementById(elementId));
           // 指定图表的配置项和数据
           var option = {
+            title: {
+              text: "开关issue的数量"
+            },
             series : [
               {
                 type: 'pie',
@@ -171,13 +227,35 @@
           };
           // 使用刚指定的配置项和数据显示图表。
           myChart.setOption(option);
-        }, 1000)
-      }
+        }, 1000);
+      },
 
+      setLineChart(elementId) {
+
+        var array = [["2022-12-1", 2], ["2022-12-2", 3], ["2022-12-5", 7]]
+
+        setTimeout(() => {
+          var myChart = echarts.init(document.getElementById(elementId));
+          var option = {
+            xAxis: {
+              type: 'category',
+            },
+            yAxis: {
+              type: 'value'
+            },
+            series: [
+              {
+                data: array,
+                type: 'line'
+              },
+            ]
+          };
+          myChart.setOption(option);
+        }, 1000);
+      }
 
     }
   })
-
 
 </script>
 </html>

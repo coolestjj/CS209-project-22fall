@@ -9,7 +9,7 @@
         select count(*) from ljjcjava2.issue where state=#{state};
     </select>
 
-<!--    批量插入语句-->
+    <!--批量插入语句-->
     <insert id="insertIssues">
         insert into ljjcjava2.issue (id, state) values
         <foreach item="issue" collection="list" separator=",">
