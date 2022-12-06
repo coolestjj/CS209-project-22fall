@@ -8,31 +8,10 @@
   <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
   <script src="https://unpkg.com/element-ui/lib/index.js"></script>
-  <script type="text/javascript" src="https://d3js.org/d3.v4.min.js"></script>
   <script src="https://cdn.staticfile.org/echarts/4.3.0/echarts.min.js"></script>
 
 </head>
 <body>
-
-<!--<h4>Demo Representation</h4>-->
-<!--<table border="1">-->
-<!--    <tr>-->
-<!--        <th>Name</th>-->
-<!--        <th>Developer_num</th>-->
-<!--        <th>Most_active_developer</th>-->
-<!--        <th>Open_issues</th>-->
-<!--        <th>Close_issues</th>-->
-<!--    </tr>-->
-<!--    <tr>-->
-<!--        <td id="1">var1</td>-->
-<!--        <td id="2">var2</td>-->
-<!--        <td id="3">var3</td>-->
-<!--        <td id="4">var4</td>-->
-<!--        <td id="5">var5</td>-->
-<!--    </tr>-->
-
-<!--</table>-->
-
 <div id="box">
   <el-form :model="repoInfo" ref="repoInfo" label-width="100px" class="demo-repoInfo">
     <el-form-item label="用户名">
@@ -52,66 +31,15 @@
 </div>
 
 <!--<div id="svgcontainer"></div>-->
-<div id="issues" style="width: 600px; height: 400px;"></div>
+<div id="issues" style="width: 600px; height: 400px; margin-top: 10px; margin-bottom: 10px"></div>
 
-<div id="Commits" style="width: 1200px; height: 400px;"></div>
+<div id="Commits" style="width: 1500px; height: 600px; margin-top: 10px; margin-bottom: 10px"></div>
 
-<div id="top_developers" style="width: 600px; height: 400px;"></div>
+<div id="top_developers" style="width: 600px; height: 400px; margin-top: 10px; margin-bottom: 10px"></div>
 
 </body>
 
 <script>
-
-  var array = [[1, 2], [2, 3], [3, 7],[4,4],[5,5],[6,6],[7,7],[8,8],[9,9],[10,2],[11,3],[12,5]]
-  var myChart = echarts.init(document.getElementById("Commits"));
-  var option = {
-    title: {
-      text: "commit时间分布"
-    },
-    xAxis: {
-      type: 'category',
-    },
-    yAxis: {
-      type: 'value'
-    },
-    series: [
-      {
-        data: array,
-        type: 'line'
-      },
-    ]
-  };
-  myChart.setOption(option);
-
-  var developer_commit = [['a', 100], ['b', 3], ['c', 2]];
-  var barGraph = echarts.init(document.getElementById("top_developers"));
-  var option2 = {
-    title: {
-      text: "最多commit的开发者"
-    },
-    xAxis: {
-      type: 'category',
-    },
-    yAxis: {
-      type: 'value'
-    },
-    series: [
-      {
-        type: 'bar',
-        data: developer_commit,
-        itemStyle: {
-          normal: {
-            label: {
-              show: true,
-              position: 'top'
-            }
-          }
-        }
-      }
-    ]
-  };
-  barGraph.setOption(option2);
-
 
   let vm = new Vue({
     el: '#box',
@@ -139,11 +67,13 @@
         this.storeReleases();
         this.storeIssues();
         this.storeCommits();
+
+        this.getCommitNumByTime();
+        this.getIssues();
         // this.getOpenIssues();
         // this.getCloseIssues();
-        // this.setPie('issues');
+        this.setPie('issues');
         //
-        // console.log("Get!");
         // console.log(this.openIssues);
         // console.log(this.closeIssues);
       },
@@ -219,6 +149,27 @@
         })
       },
 
+      getIssues() {
+        $.ajax({
+          url: '/issue/get-open-issues',
+          methods: 'get',
+          // async: false,
+          success: function (data) {
+            vm.openIssues = data;
+            console.log("getOpenIssues: " + vm.openIssues);
+          }
+        });
+        $.ajax({
+          url: '/issue/get-close-issues',
+          methods: 'get',
+          // async: false,
+          success: function (data) {
+            vm.closeIssues = data;
+            console.log("getCloseIssues: " + vm.closeIssues);
+          }
+        })
+      },
+
       getOpenIssues() {
         // setTimeout(() => {
           // 得到open的issue
@@ -249,6 +200,23 @@
         // })
       },
 
+      getCommitNumByTime() {
+        let dates = [];
+        let commitNums = [];
+        $.ajax({
+          url: '/commit/get-date-commitNum',
+          methods: 'get',
+          async: false,
+          success: function(data) {
+            $.each(data, function(index, item) {
+              dates.push(item.commit_date);
+              commitNums.push(item.commitNum);
+            });
+            setChart("Commits", dates, commitNums, "日期与commit数量的关系");
+          }
+        })
+      },
+
       setPie(elementId) {
         setTimeout(() => {
           console.log("set openIssues: " + vm.openIssues);
@@ -275,33 +243,79 @@
           myChart.setOption(option);
         }, 1000);
       },
-
-      setLineChart(elementId) {
-
-        var array = [["2022-12-1", 2], ["2022-12-2", 3], ["2022-12-5", 7]]
-
-        setTimeout(() => {
-          var myChart = echarts.init(document.getElementById(elementId));
-          var option = {
-            xAxis: {
-              type: 'category',
-            },
-            yAxis: {
-              type: 'value'
-            },
-            series: [
-              {
-                data: array,
-                type: 'line'
-              },
-            ]
-          };
-          myChart.setOption(option);
-        }, 1000);
-      }
-
     }
   })
+
+  function setLineChart(elementId, x_data, y_data) {
+    console.log(x_data);
+    console.log(y_data);
+
+    setTimeout(() => {
+      var myChart = echarts.init(document.getElementById(elementId));
+      var option = {
+        xAxis: {
+          data: x_data,
+          type: 'category'
+        },
+        yAxis: {
+          type: 'value'
+        },
+        series: [
+          {
+            data: y_data,
+            type: 'line'
+          },
+        ]
+      };
+      myChart.setOption(option);
+    }, 1000);
+  }
+
+  function setChart(elementId, x_data, y_data, title) {
+    var barGraph = echarts.init(document.getElementById(elementId));
+    var option = {
+      dataZoom: [
+        {
+          type: 'slider',
+          show: true,
+          start: 0,
+          end: 10,
+          xAxisIndex: [0]
+        }
+      ],
+      title: {
+        text: title
+      },
+      xAxis: {
+        type: 'category',
+        data: x_data,
+        boundaryGap: true,
+        axisLabel: {
+          interval: 0,
+          rotate: 45,
+          show: true
+        }
+      },
+      yAxis: {
+        type: 'value'
+      },
+      series: [
+        {
+          data: y_data,
+          type: 'bar',
+          itemStyle: {
+            normal: {
+              label: {
+                show: true,
+                position: 'top'
+              }
+            }
+          }
+        }
+      ]
+    };
+    barGraph.setOption(option);
+  }
 
 </script>
 </html>

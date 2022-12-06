@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.springproject.entity.Commit;
+import com.example.springproject.entity.DateAndCommitNum;
 import com.example.springproject.service.CommitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +31,12 @@ public class CommitController {
     public String storeCommits(@RequestParam String url) throws IOException {
         commitService.insertCommits(getRawJson(url));
         return "Commits stored";
+    }
+
+    @GetMapping("/get-date-commitNum")
+    public List<DateAndCommitNum> getCommitNumByTime() {
+
+        return commitService.getCommitNumByTime();
     }
 
     public List<Commit> getRawJson(String url) throws IOException {
