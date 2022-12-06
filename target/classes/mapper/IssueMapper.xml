@@ -9,11 +9,11 @@
         select count(*) from ljjcjava2.issue where state=#{state};
     </select>
 
-<!--    批量插入语句-->
+    <!--批量插入语句-->
     <insert id="insertIssues">
-        insert into ljjcjava2.issue (id, state) values
+        insert into ljjcjava2.issue (id, state, create_date, close_date) values
         <foreach item="issue" collection="list" separator=",">
-        (#{issue.id}, #{issue.state})
+        (#{issue.id}, #{issue.state}, #{issue.create_date}, #{issue.close_date})
         </foreach>
     </insert>
 

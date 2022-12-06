@@ -26,10 +26,10 @@ public class IssueController {
     private IssueService issueService;
 
     @GetMapping("/store-issues")
-    public int storeIssues(@RequestParam String url) throws IOException {
+    public String storeIssues(@RequestParam String url) throws IOException {
         System.out.println(url);
         issueService.insertIssues(getRawJson(url));
-        return 1;
+        return "Issues stored";
     }
 
     @GetMapping("/get-open-issues")
@@ -87,6 +87,8 @@ public class IssueController {
                 Issue issue = new Issue();
                 issue.setId(jsonObject.getIntValue("id"));
                 issue.setState(jsonObject.getString("state"));
+                issue.setCreate_date(jsonObject.getSqlDate("created_at"));
+                issue.setClose_date(jsonObject.getSqlDate("closed_at"));
                 issues.add(issue);
             }
         }

@@ -109,7 +109,7 @@
         }
       }
     ]
-  }
+  };
   barGraph.setOption(option2);
 
 
@@ -131,17 +131,35 @@
             + this.repoInfo.ownerName
             + '/'
             + this.repoInfo.repoName;
-        console.log(this.repoAddress + '/issues?per_page=100');
 
+        this.truncate("issue");
+        this.truncate("commit");
+        this.truncate("`release`");
+
+        this.storeReleases();
         this.storeIssues();
+        this.storeCommits();
+        // this.getOpenIssues();
+        // this.getCloseIssues();
+        // this.setPie('issues');
+        //
+        // console.log("Get!");
+        // console.log(this.openIssues);
+        // console.log(this.closeIssues);
+      },
 
-        this.getOpenIssues();
-        this.getCloseIssues();
-        this.setPie('issues');
-
-        console.log("Get!")
-        console.log(this.openIssues);
-        console.log(this.closeIssues);
+      truncate(tableName) {
+        $.ajax({
+          url: '/basic/truncate',
+          type: 'post',
+          async: false,
+          data: {
+            tableName: tableName
+          },
+          success: function(data) {
+            console.log(data)
+          }
+        })
       },
 
       storeIssues() {
@@ -157,7 +175,7 @@
           success: function (data) {
             console.log(data)
           }
-        })
+        });
 
         // 把state为closed的issue存进表里
         $.ajax({
@@ -168,6 +186,34 @@
             url: this.repoAddress + '/issues?per_page=100&state=closed'
           },
           success: function (data) {
+            console.log(data)
+          }
+        })
+      },
+
+      storeReleases() {
+        $.ajax({
+          url: '/release/store-releases',
+          methods: 'get',
+          async: false,
+          data: {
+            url: this.repoAddress + '/releases?per_page=100'
+          },
+          success: function(data) {
+            console.log(data)
+          }
+        })
+      },
+
+      storeCommits() {
+        $.ajax({
+          url: '/commit/store-commits',
+          methods: 'get',
+          async: false,
+          data: {
+            url: this.repoAddress + '/commits?per_page=100'
+          },
+          success: function(data) {
             console.log(data)
           }
         })
