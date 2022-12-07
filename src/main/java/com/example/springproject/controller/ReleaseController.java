@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.springproject.entity.Release;
+import com.example.springproject.entity.ReleaseAndCommitNum;
 import com.example.springproject.service.ReleaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,6 +35,27 @@ public class ReleaseController {
     @GetMapping("/get-releases")
     public int getReleases() {
         return releaseService.getReleases();
+    }
+
+    @GetMapping("/get-commits-preRelease")
+    public List<ReleaseAndCommitNum> getCommitsBeforeReleases() {
+        List<ReleaseAndCommitNum> initialList = releaseService.getCommitsBeforeReleases();
+        List<ReleaseAndCommitNum> resultList = new ArrayList<>();
+        for (int i = 0; i < initialList.size(); i++) {
+            ReleaseAndCommitNum releaseAndCommitNum;
+            if (i == 0) {
+                releaseAndCommitNum = new ReleaseAndCommitNum();
+                releaseAndCommitNum.setReleaseId(initialList.get(i).getReleaseId());
+                releaseAndCommitNum.setCommitNum(initialList.get(i).getCommitNum());
+            }
+            else {
+                releaseAndCommitNum = new ReleaseAndCommitNum();
+                releaseAndCommitNum.setCommitNum(initialList.get(i).getCommitNum() - initialList.get(i - 1).getCommitNum());
+                releaseAndCommitNum.setReleaseId(initialList.get(i).getReleaseId());
+            }
+            resultList.add(releaseAndCommitNum);
+        }
+        return resultList;
     }
 
     public List<Release> getRawJson(String url) throws IOException {

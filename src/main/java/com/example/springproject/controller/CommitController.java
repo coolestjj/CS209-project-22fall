@@ -36,7 +36,6 @@ public class CommitController {
 
     @GetMapping("/get-date-commitNum")
     public List<DateAndCommitNum> getCommitNumByTime() {
-
         return commitService.getCommitNumByTime();
     }
 

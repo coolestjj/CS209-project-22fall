@@ -17,4 +17,13 @@
         select count(*) from ljjcjava2.release;
     </select>
 
+    <select id="getCommitsBeforeReleases" resultType="com.example.springproject.entity.ReleaseAndCommitNum">
+        select releaseId, count(commit_time) as commitNum
+        from (select commit_time, publish_time, `release`.id as releaseId
+        from ljjcjava2.commit
+        join ljjcjava2.`release`) as a
+        where commit_time <![CDATA[<]]> publish_time
+        group by a.publish_time
+    </select>
+
 </mapper>

@@ -1,6 +1,7 @@
 package com.example.springproject.service.impl;
 
 import com.example.springproject.entity.Release;
+import com.example.springproject.entity.ReleaseAndCommitNum;
 import com.example.springproject.mapper.ReleaseMapper;
 import com.example.springproject.service.ReleaseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,11 @@ public class ReleaseServiceImpl implements ReleaseService {
     @Override
     public int getReleases() {
         return releaseMapper.getReleases();
+    }
+
+    @Override
+    public List<ReleaseAndCommitNum> getCommitsBeforeReleases() {
+        return releaseMapper.getCommitsBeforeReleases();
     }
 
 }
