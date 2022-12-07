@@ -72,6 +72,7 @@ public class ReleaseController {
             HttpURLConnection conn = (HttpURLConnection) restURL.openConnection();
 
             conn.setRequestMethod("GET"); // POST GET PUT DELETE
+            // ToDo: 添加token请求头
             conn.setRequestProperty("Accept", "vnd.github+json");
 
             BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
@@ -89,13 +90,5 @@ public class ReleaseController {
         }
         System.out.println(releases.size());
         return releases;
-    }
-
-    public static void main(String[] args) throws IOException {
-        ReleaseController r = new ReleaseController();
-//        List<Release> releases = r.getRawJson("https://api.github.com/repos/acaudwell/Gource/releases?per_page=100");
-//        for (Release release : releases) {
-//            System.out.println(release.getId() + "|" + release.getPublish_time());
-//        }
     }
 }
