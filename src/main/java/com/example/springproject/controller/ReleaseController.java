@@ -31,6 +31,11 @@ public class ReleaseController {
         return "Releases stored";
     }
 
+    @GetMapping("/get-releases")
+    public int getReleases() {
+        return releaseService.getReleases();
+    }
+
     public List<Release> getRawJson(String url) throws IOException {
         int pageNum = 0;
         String rawJson = "";

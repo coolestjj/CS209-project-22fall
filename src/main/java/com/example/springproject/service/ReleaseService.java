@@ -7,4 +7,6 @@ import java.util.List;
 public interface ReleaseService {
 
     void insertReleases(List<Release> releases);
+
+    int getReleases();
 }

@@ -2,6 +2,7 @@ package com.example.springproject.service.impl;
 
 import com.example.springproject.entity.Commit;
 import com.example.springproject.entity.DateAndCommitNum;
+import com.example.springproject.entity.DeveloperAndCommitNum;
 import com.example.springproject.mapper.CommitMapper;
 import com.example.springproject.service.CommitService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,5 +25,10 @@ public class CommitServiceImpl implements CommitService {
     public List<DateAndCommitNum> getCommitNumByTime() {
         return commitMapper.getCommitNumByTime();
     }
+
+    @Override
+    public List<DeveloperAndCommitNum> getCommitNumByDeveloper() {
+        return commitMapper.getCommitNumByDeveloper();
+    };
 
 }

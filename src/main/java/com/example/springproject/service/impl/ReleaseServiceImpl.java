@@ -19,4 +19,9 @@ public class ReleaseServiceImpl implements ReleaseService {
         releaseMapper.insertReleases(releases);
     }
 
+    @Override
+    public int getReleases() {
+        return releaseMapper.getReleases();
+    }
+
 }

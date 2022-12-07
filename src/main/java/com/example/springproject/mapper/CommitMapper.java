@@ -2,6 +2,7 @@ package com.example.springproject.mapper;
 
 import com.example.springproject.entity.Commit;
 import com.example.springproject.entity.DateAndCommitNum;
+import com.example.springproject.entity.DeveloperAndCommitNum;
 import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
@@ -16,6 +17,7 @@ public interface CommitMapper {
 
     void insertCommits(List<Commit> Commits);
 
-    @MapKey("commit_date")
     List<DateAndCommitNum> getCommitNumByTime();
+
+    List<DeveloperAndCommitNum> getCommitNumByDeveloper();
 }

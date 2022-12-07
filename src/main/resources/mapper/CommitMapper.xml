@@ -19,5 +19,11 @@
         order by commit_date;
     </select>
 
+    <select id="getCommitNumByDeveloper" resultType="com.example.springproject.entity.DeveloperAndCommitNum">
+        select developer, count(*) as commitNum from ljjcjava2.commit
+        group by developer
+        order by commitNum desc;
+    </select>
+
 
 </mapper>

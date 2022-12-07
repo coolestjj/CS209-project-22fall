@@ -35,7 +35,7 @@
 
 <div id="Commits" style="width: 1500px; height: 600px; margin-top: 10px; margin-bottom: 10px"></div>
 
-<div id="top_developers" style="width: 600px; height: 400px; margin-top: 10px; margin-bottom: 10px"></div>
+<div id="top_developers" style="width: 1500px; height: 400px; margin-top: 10px; margin-bottom: 10px"></div>
 
 </body>
 
@@ -47,6 +47,7 @@
       repoAddress: '',
       openIssues: '',
       closeIssues: '',
+      releases: '',
       repoInfo: {
         ownerName: '',
         repoName: ''
@@ -60,16 +61,18 @@
             + '/'
             + this.repoInfo.repoName;
 
-        this.truncate("issue");
-        this.truncate("commit");
-        this.truncate("`release`");
-
-        this.storeReleases();
-        this.storeIssues();
-        this.storeCommits();
+        // this.truncate("issue");
+        // this.truncate("commit");
+        // this.truncate("`release`");
+        //
+        // this.storeReleases();
+        // this.storeIssues();
+        // this.storeCommits();
 
         this.getCommitNumByTime();
         this.getIssues();
+        this.getReleases();
+        this.getCommitNumByDeveloper();
         // this.getOpenIssues();
         // this.getCloseIssues();
         this.setPie('issues');
@@ -217,6 +220,35 @@
         })
       },
 
+      getCommitNumByDeveloper() {
+        let developers = [];
+        let commitNums = [];
+        $.ajax({
+          url: '/commit/get-developer-commitNum',
+          methods: 'get',
+          async: false,
+          success: function(data) {
+            $.each(data, function(index, item) {
+              developers.push(item.developer);
+              commitNums.push(item.commitNum);
+            });
+            setChart("top_developers", developers, commitNums, "developer与commit数量的关系");
+          }
+        })
+      },
+
+      getReleases() {
+        $.ajax({
+          url: '/release/get-releases',
+          methods: 'get',
+          async: false,
+          success: function(data) {
+            vm.releases = data;
+            console.log("releases: " + data);
+          }
+        })
+      },
+
       setPie(elementId) {
         setTimeout(() => {
           console.log("set openIssues: " + vm.openIssues);
@@ -244,7 +276,7 @@
         }, 1000);
       },
     }
-  })
+  });
 
   function setLineChart(elementId, x_data, y_data) {
     console.log(x_data);
