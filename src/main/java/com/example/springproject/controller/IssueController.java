@@ -72,7 +72,7 @@ public class IssueController {
             HttpURLConnection conn = (HttpURLConnection) restURL.openConnection();
 
             conn.setRequestMethod("GET"); // POST GET PUT DELETE
-            // ToDo: 添加token请求头
+            conn.setRequestProperty("authorization", "Bearer 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");
             conn.setRequestProperty("Accept", "vnd.github+json");
 
             BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
