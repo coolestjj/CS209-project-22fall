@@ -28,8 +28,12 @@ public class ReleaseController {
 
     @GetMapping("/store-releases")
     public String storeReleases(@RequestParam String url) throws IOException {
-        releaseService.insertReleases(getRawJson(url));
-        return "Releases stored";
+        List<Release> releases = getRawJson(url);
+        if (releases.size() != 0) {
+            releaseService.insertReleases(releases);
+            return "Releases stored";
+        }
+        return "No Release";
     }
 
     @GetMapping("/get-releases")
@@ -72,7 +76,8 @@ public class ReleaseController {
             HttpURLConnection conn = (HttpURLConnection) restURL.openConnection();
 
             conn.setRequestMethod("GET"); // POST GET PUT DELETE
-            conn.setRequestProperty("authorization", "Bearer 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");
+            // Bearer后面为授权用的github token，请改成自己用的
+            conn.setRequestProperty("authorization", "Bearer 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");
             conn.setRequestProperty("Accept", "vnd.github+json");
 
             BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));

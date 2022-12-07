@@ -27,7 +27,7 @@
     </el-form-item>
   </el-form>
 
-  <el-button @click="handleClick" style="margin-left:100px" type="primary">确定</el-button>
+  <el-button id="button" @click="handleClick" style="margin-left:100px" type="primary">确定</el-button>
 
   <div style="margin-top: 20px; margin-bottom: 20px; margin-left: 50px">
     <table border="1">
@@ -57,9 +57,9 @@
 
 <div id="Commits" style="width: 1500px; height: 600px; margin-top: 10px; margin-bottom: 10px"></div>
 
-<div id="top_developers" style="width: 1500px; height: 400px; margin-top: 10px; margin-bottom: 10px"></div>
+<div id="top_developers" style="width: 1500px; height: 600px; margin-top: 10px; margin-bottom: 10px"></div>
 
-<div id="commits_before_release" style="width: 1500px; height: 400px; margin-top: 10px; margin-bottom: 10px"></div>
+<div id="commits_before_release" style="width: 1500px; height: 600px; margin-top: 10px; margin-bottom: 10px"></div>
 
 </body>
 
@@ -163,6 +163,9 @@
           },
           success: function(data) {
             console.log(data)
+          },
+          error: function(XMLHttpRequest, textStatus) {
+            console.log("No Release")
           }
         })
       },
@@ -244,7 +247,7 @@
         $.ajax({
           url: '/commit/get-date-commitNum',
           methods: 'get',
-          async: false,
+          // async: false,
           success: function(data) {
             $.each(data, function(index, item) {
               dates.push(item.commit_date);
@@ -261,7 +264,7 @@
         $.ajax({
           url: '/commit/get-developer-commitNum',
           methods: 'get',
-          async: false,
+          // async: false,
           success: function(data) {
             $.each(data, function(index, item) {
               developers.push(item.developer);
@@ -277,7 +280,7 @@
         $.ajax({
           url: '/release/get-releases',
           methods: 'get',
-          async: false,
+          // async: false,
           success: function(data) {
             vm.releases = data;
             console.log("releases: " + data);
@@ -300,34 +303,8 @@
                     "release的id", "之前更新的commit数量");
           }
         })
-      },
+      }
 
-      // setPie(elementId) {
-      //   setTimeout(() => {
-      //     console.log("set openIssues: " + vm.openIssues);
-      //     console.log("set closeIssues: " + vm.closeIssues);
-      //     var myChart = echarts.init(document.getElementById(elementId));
-      //     // 指定图表的配置项和数据
-      //     var option = {
-      //       title: {
-      //         text: "开关issue的数量"
-      //       },
-      //       series : [
-      //         {
-      //           type: 'pie',
-      //           radius: '55%',
-      //           roseType: 'angle',
-      //           data:[
-      //             {value: vm.openIssues, name:'open issue的数量: ' + vm.openIssues},
-      //             {value: vm.closeIssues, name:'closed issue的数量: ' + vm.closeIssues}
-      //           ]
-      //         }
-      //       ]
-      //     };
-      //     // 使用刚指定的配置项和数据显示图表。
-      //     myChart.setOption(option);
-      //   }, 1000);
-      // },
     }
   });
 

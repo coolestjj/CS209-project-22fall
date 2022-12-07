@@ -30,8 +30,12 @@ public class CommitController {
 
     @GetMapping("/store-commits")
     public String storeCommits(@RequestParam String url) throws IOException {
-        commitService.insertCommits(getRawJson(url));
-        return "Commits stored";
+        List<Commit> commits = getRawJson(url);
+        if (commits.size() != 0) {
+            commitService.insertCommits(getRawJson(url));
+            return "Commits stored";
+        }
+        return "No commit";
     }
 
     @GetMapping("/get-date-commitNum")
@@ -58,7 +62,8 @@ public class CommitController {
             HttpURLConnection conn = (HttpURLConnection) restURL.openConnection();
 
             conn.setRequestMethod("GET"); // POST GET PUT DELETE
-            conn.setRequestProperty("authorization", "Bearer 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");
+            // Bearer后面为授权用的github token，请改成自己用的
+            conn.setRequestProperty("authorization", "Bearer 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");
             conn.setRequestProperty("Accept", "vnd.github+json");
 
             BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
@@ -81,14 +86,5 @@ public class CommitController {
         }
         System.out.println(commits.size());
         return commits;
-    }
-
-    public static void main(String[] args) throws IOException {
-        CommitController c = new CommitController();
-        List<Commit> commits = c.getRawJson("https://api.github.com/repos/DiUS/java-faker/commits?per_page=100");
-
-        for (Commit commit : commits) {
-            System.out.println(commit.getSha() + "|" + commit.getDeveloper() + "|" + commit.getCommit_date());
-        }
     }
 }

@@ -27,9 +27,12 @@ public class IssueController {
 
     @GetMapping("/store-issues")
     public String storeIssues(@RequestParam String url) throws IOException {
-        System.out.println(url);
-        issueService.insertIssues(getRawJson(url));
-        return "Issues stored";
+        List<Issue> issues = getRawJson(url);
+        if (issues.size() != 0) {
+            issueService.insertIssues(issues);
+            return "Issues stored";
+        }
+        return "No issue";
     }
 
     @GetMapping("/get-open-issues")
@@ -72,7 +75,8 @@ public class IssueController {
             HttpURLConnection conn = (HttpURLConnection) restURL.openConnection();
 
             conn.setRequestMethod("GET"); // POST GET PUT DELETE
-            conn.setRequestProperty("authorization", "Bearer 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");
+            // Bearer后面为授权用的github token，请改成自己用的
+            conn.setRequestProperty("authorization", "Bearer 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");
             conn.setRequestProperty("Accept", "vnd.github+json");
 
             BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
