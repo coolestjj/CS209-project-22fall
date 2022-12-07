@@ -9,4 +9,10 @@ public interface IssueService {
     int getIssueByState(String state);
 
     void insertIssues(List<Issue> issues);
+
+    double getSolveTimeAVG();
+
+    double getSolveTimeMAX();
+
+    double getSolveTimeSTDDEV();
 }

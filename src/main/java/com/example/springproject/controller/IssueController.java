@@ -42,6 +42,21 @@ public class IssueController {
         return issueService.getIssueByState("closed");
     }
 
+    @GetMapping("/get-solveTime-avg")
+    public double getSolveTimeAVG() {
+        return issueService.getSolveTimeAVG();
+    }
+
+    @GetMapping("/get-solveTime-max")
+    public double getSolveTimeMAX() {
+        return issueService.getSolveTimeMAX();
+    }
+
+    @GetMapping("/get-solveTime-stddev")
+    public double getSolveTimeSTDDEV() {
+        return issueService.getSolveTimeSTDDEV();
+    }
+
     public List<Issue> getRawJson(String url) throws IOException {
 
         int pageNum = 0;

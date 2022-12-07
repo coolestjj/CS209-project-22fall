@@ -16,4 +16,10 @@ public interface IssueMapper {
 
     void insertIssues(List<Issue> issues);
 
+    double getSolveTimeAVG();
+
+    double getSolveTimeMAX();
+
+    double getSolveTimeSTDDEV();
+
 }

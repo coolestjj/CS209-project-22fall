@@ -25,4 +25,19 @@ public class IssueServiceImpl implements IssueService {
     public void insertIssues(List<Issue> issues) {
         issueMapper.insertIssues(issues);
     }
+
+    @Override
+    public double getSolveTimeAVG() {
+        return issueMapper.getSolveTimeAVG();
+    }
+
+    @Override
+    public double getSolveTimeMAX() {
+        return issueMapper.getSolveTimeMAX();
+    }
+
+    @Override
+    public double getSolveTimeSTDDEV() {
+        return issueMapper.getSolveTimeSTDDEV();
+    }
 }

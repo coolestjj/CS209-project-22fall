@@ -17,4 +17,19 @@
         </foreach>
     </insert>
 
+    <select id="getSolveTimeAVG" resultType="double">
+        select avg(DATEDIFF(close_date, create_date)) as avgTime from ljjcjava2.issue
+        where state = 'closed';
+    </select>
+
+    <select id="getSolveTimeMAX" resultType="double">
+        select max(DATEDIFF(close_date, create_date)) as maxTime from ljjcjava2.issue
+        where state = 'closed';
+    </select>
+
+    <select id="getSolveTimeSTDDEV" resultType="double">
+        select stddev(DATEDIFF(close_date, create_date)) as stddevTime from ljjcjava2.issue
+        where state = 'closed';
+    </select>
+
 </mapper>

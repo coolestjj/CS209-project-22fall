@@ -28,7 +28,31 @@
   </el-form>
 
   <el-button @click="handleClick" style="margin-left:100px" type="primary">确定</el-button>
+
+  <div style="margin-top: 20px; margin-bottom: 20px; margin-left: 50px">
+    <table border="1">
+      <tr>
+        <th>Repository Address</th>
+        <th>Number of Releases</th>
+        <th>Number of Developers</th>
+        <th>Average issue solve time (day)</th>
+        <th>Max issue solve time (day)</th>
+        <th>Standard deviation of issue solve time</th>
+      </tr>
+
+      <tr>
+        <td>{{githubLink}}</td>
+        <td>{{releases}}</td>
+        <td>{{developers}}</td>
+        <td>{{issueTimeAVG}}</td>
+        <td>{{issueTimeMAX}}</td>
+        <td>{{issueTimeSTDDEV}}</td>
+      </tr>
+    </table>
+  </div>
+
 </div>
+
 
 <!--<div id="svgcontainer"></div>-->
 <div id="issues" style="width: 600px; height: 400px; margin-top: 10px; margin-bottom: 10px"></div>
@@ -44,10 +68,15 @@
   let vm = new Vue({
     el: '#box',
     data: {
+      githubLink: '',
       repoAddress: '',
       openIssues: '',
       closeIssues: '',
-      releases: '',
+      releases: 0,
+      developers: 0,
+      issueTimeAVG: '',
+      issueTimeMAX: '',
+      issueTimeSTDDEV: '',
       repoInfo: {
         ownerName: '',
         repoName: ''
@@ -57,6 +86,10 @@
       handleClick() {
         // eg: https://api.github.com/repos/DiUS/java-faker
         vm.repoAddress = 'https://api.github.com/repos/'
+            + this.repoInfo.ownerName
+            + '/'
+            + this.repoInfo.repoName;
+        vm.githubLink = 'https://github.com/'
             + this.repoInfo.ownerName
             + '/'
             + this.repoInfo.repoName;
@@ -73,6 +106,9 @@
         this.getIssues();
         this.getReleases();
         this.getCommitNumByDeveloper();
+        this.getSolveTimeAVG();
+        this.getSolveTimeMAX();
+        this.getSolveTimeSTDDEV();
         // this.getOpenIssues();
         // this.getCloseIssues();
         this.setPie('issues');
@@ -203,6 +239,39 @@
         // })
       },
 
+      getSolveTimeAVG() {
+        $.ajax({
+          url: '/issue/get-solveTime-avg',
+          methods: 'get',
+          success: function(data) {
+            vm.issueTimeAVG = data;
+            console.log("Average issue time: " + vm.issueTimeAVG + " days")
+          }
+        })
+      },
+
+      getSolveTimeMAX() {
+        $.ajax({
+          url: '/issue/get-solveTime-max',
+          methods: 'get',
+          success: function(data) {
+            vm.issueTimeMAX = data;
+            console.log("Max issue time: " + vm.issueTimeMAX + " days")
+          }
+        })
+      },
+
+      getSolveTimeSTDDEV() {
+        $.ajax({
+          url: '/issue/get-solveTime-stddev',
+          methods: 'get',
+          success: function(data) {
+            vm.issueTimeSTDDEV = data;
+            console.log("Standard deviation of Issue time: " + vm.issueTimeSTDDEV)
+          }
+        })
+      },
+
       getCommitNumByTime() {
         let dates = [];
         let commitNums = [];
@@ -215,7 +284,7 @@
               dates.push(item.commit_date);
               commitNums.push(item.commitNum);
             });
-            setChart("Commits", dates, commitNums, "日期与commit数量的关系");
+            setChart("Commits", dates, commitNums, "日期与commit数量的关系", 45);
           }
         })
       },
@@ -232,7 +301,8 @@
               developers.push(item.developer);
               commitNums.push(item.commitNum);
             });
-            setChart("top_developers", developers, commitNums, "developer与commit数量的关系");
+            vm.developers = developers.length;
+            setChart("top_developers", developers, commitNums, "developer与commit数量的关系", 0);
           }
         })
       },
@@ -303,7 +373,7 @@
     }, 1000);
   }
 
-  function setChart(elementId, x_data, y_data, title) {
+  function setChart(elementId, x_data, y_data, title, x_rotate) {
     var barGraph = echarts.init(document.getElementById(elementId));
     var option = {
       dataZoom: [
@@ -324,7 +394,7 @@
         boundaryGap: true,
         axisLabel: {
           interval: 0,
-          rotate: 45,
+          rotate: x_rotate,
           show: true
         }
       },
