@@ -34,29 +34,11 @@ public class IssueController {
 
     @GetMapping("/get-open-issues")
     public int getOpenIssues() {
-//        List<Issue> issues;
-//        issues = issueService.getIssueByState("open");
-//
-//        ArrayList<Integer> issueIds = new ArrayList<>();
-//        for (Issue issue : issues) {
-//            issueIds.add(issue.getId());
-//        }
-//        System.err.println("issueIds length: " + issueIds.size());
-//        return issueIds;
         return issueService.getIssueByState("open");
     }
 
     @GetMapping("/get-close-issues")
     public int getCloseIssues() {
-//        List<Issue> issues;
-//        issues = issueService.getIssueByState("closed");
-//
-//        ArrayList<Integer> issueIds = new ArrayList<>();
-//        for (Issue issue : issues) {
-//            issueIds.add(issue.getId());
-//        }
-//        System.err.println("issueIds length: " + issueIds.size());
-//        return issueIds;
         return issueService.getIssueByState("closed");
     }
 
