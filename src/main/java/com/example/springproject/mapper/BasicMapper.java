@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BasicMapper {
 
-    void truncateTables(@Param("tableName") String tableName);
+  void truncateTables(@Param("tableName") String tableName);
 }

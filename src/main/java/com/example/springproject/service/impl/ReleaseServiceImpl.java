@@ -12,22 +12,22 @@ import java.util.List;
 @Service
 public class ReleaseServiceImpl implements ReleaseService {
 
-    @Autowired
-    private ReleaseMapper releaseMapper;
+  @Autowired
+  private ReleaseMapper releaseMapper;
 
-    @Override
-    public void insertReleases(List<Release> releases) {
-        releaseMapper.insertReleases(releases);
-    }
+  @Override
+  public void insertReleases(List<Release> releases) {
+    releaseMapper.insertReleases(releases);
+  }
 
-    @Override
-    public int getReleases() {
-        return releaseMapper.getReleases();
-    }
+  @Override
+  public int getReleases() {
+    return releaseMapper.getReleases();
+  }
 
-    @Override
-    public List<ReleaseAndCommitNum> getCommitsBeforeReleases() {
-        return releaseMapper.getCommitsBeforeReleases();
-    }
+  @Override
+  public List<ReleaseAndCommitNum> getCommitsBeforeReleases() {
+    return releaseMapper.getCommitsBeforeReleases();
+  }
 
 }

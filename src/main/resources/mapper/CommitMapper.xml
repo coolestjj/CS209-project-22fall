@@ -1,29 +1,32 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!--namespace=绑定一个对应的Dao/Mapper接口-->
 <mapper namespace="com.example.springproject.mapper.CommitMapper">
 
-    <!--批量插入语句-->
-    <insert id="insertCommits">
-        insert into ljjcjava2.commit (sha, commit_date, commit_time, developer) values
-        <foreach item="commit" collection="list" separator=",">
-            (#{commit.sha}, #{commit.commit_date}, #{commit.commit_time}, #{commit.developer})
-        </foreach>
-    </insert>
-    
-    <select id="getCommitNumByTime" resultType="com.example.springproject.entity.DateAndCommitNum">
-        select commit_date, count(*) as commitNum from ljjcjava2.commit
-        group by commit_date
-        order by commit_date;
-    </select>
+  <!--批量插入语句-->
+  <insert id="insertCommits">
+    insert into ljjcjava2.commit (sha, commit_date, commit_time, developer) values
+    <foreach item="commit" collection="list" separator=",">
+      (#{commit.sha}, #{commit.commit_date}, #{commit.commit_time}, #{commit.developer})
+    </foreach>
+  </insert>
 
-    <select id="getCommitNumByDeveloper" resultType="com.example.springproject.entity.DeveloperAndCommitNum">
-        select developer, count(*) as commitNum from ljjcjava2.commit
-        group by developer
-        order by commitNum desc;
-    </select>
+  <select id="getCommitNumByTime" resultType="com.example.springproject.entity.DateAndCommitNum">
+    select commit_date, count(*) as commitNum
+    from ljjcjava2.commit
+    group by commit_date
+    order by commit_date;
+  </select>
+
+  <select id="getCommitNumByDeveloper"
+    resultType="com.example.springproject.entity.DeveloperAndCommitNum">
+    select developer, count(*) as commitNum
+    from ljjcjava2.commit
+    group by developer
+    order by commitNum desc;
+  </select>
 
 
 </mapper>

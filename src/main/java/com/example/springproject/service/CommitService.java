@@ -8,9 +8,9 @@ import java.util.List;
 
 public interface CommitService {
 
-    void insertCommits(List<Commit> Commits);
+  void insertCommits(List<Commit> Commits);
 
-    List<DateAndCommitNum> getCommitNumByTime();
+  List<DateAndCommitNum> getCommitNumByTime();
 
-    List<DeveloperAndCommitNum> getCommitNumByDeveloper();
+  List<DeveloperAndCommitNum> getCommitNumByDeveloper();
 }

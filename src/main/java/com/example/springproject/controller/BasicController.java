@@ -8,13 +8,13 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/basic")
 public class BasicController {
 
-    @Autowired
-    private BasicService basicService;
+  @Autowired
+  private BasicService basicService;
 
-    @RequestMapping("/truncate")
-    public String truncateTable(@RequestParam String tableName) {
-        basicService.truncateTable(tableName);
-        return "Table " + tableName + " truncated";
-    }
+  @RequestMapping("/truncate")
+  public String truncateTable(@RequestParam String tableName) {
+    basicService.truncateTable(tableName);
+    return "Table " + tableName + " truncated";
+  }
 
 }

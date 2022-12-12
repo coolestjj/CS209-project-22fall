@@ -11,15 +11,15 @@ import java.util.List;
 @Repository
 public interface IssueMapper {
 
-//    @Select("select * from sqlpubcooljj.issue where state=#{state}")
-    int getIssueByState(String state);
+  //    @Select("select * from sqlpubcooljj.issue where state=#{state}")
+  int getIssueByState(String state);
 
-    void insertIssues(List<Issue> issues);
+  void insertIssues(List<Issue> issues);
 
-    double getSolveTimeAVG();
+  double getSolveTimeAVG();
 
-    double getSolveTimeMAX();
+  double getSolveTimeMAX();
 
-    double getSolveTimeSTDDEV();
+  double getSolveTimeSTDDEV();
 
 }

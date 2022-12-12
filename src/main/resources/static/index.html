@@ -27,7 +27,8 @@
     </el-form-item>
   </el-form>
 
-  <el-button id="button" @click="handleClick" style="margin-left:100px" type="primary">确定</el-button>
+  <el-button id="button" @click="handleClick" style="margin-left:100px" type="primary">确定
+  </el-button>
 
   <div style="margin-top: 20px; margin-bottom: 20px; margin-left: 50px">
     <table border="1">
@@ -57,9 +58,11 @@
 
 <div id="Commits" style="width: 1500px; height: 600px; margin-top: 10px; margin-bottom: 10px"></div>
 
-<div id="top_developers" style="width: 1500px; height: 600px; margin-top: 10px; margin-bottom: 10px"></div>
+<div id="top_developers"
+     style="width: 1500px; height: 600px; margin-top: 10px; margin-bottom: 10px"></div>
 
-<div id="commits_before_release" style="width: 1500px; height: 600px; margin-top: 10px; margin-bottom: 10px"></div>
+<div id="commits_before_release"
+     style="width: 1500px; height: 600px; margin-top: 10px; margin-bottom: 10px"></div>
 
 </body>
 
@@ -82,7 +85,7 @@
     },
     methods: {
       handleClick() {
-        // eg: https://api.github.com/repos/DiUS/java-faker
+        // eg: https://api.github.com/repos/DiUS/java-faker/issues
         vm.repoAddress = 'https://api.github.com/repos/'
             + this.repoInfo.ownerName
             + '/'
@@ -118,7 +121,7 @@
           data: {
             tableName: tableName
           },
-          success: function(data) {
+          success: function (data) {
             console.log(data)
           }
         })
@@ -161,10 +164,10 @@
           data: {
             url: this.repoAddress + '/releases?per_page=100'
           },
-          success: function(data) {
+          success: function (data) {
             console.log(data)
           },
-          error: function(XMLHttpRequest, textStatus) {
+          error: function (XMLHttpRequest, textStatus) {
             console.log("No Release")
           }
         })
@@ -178,7 +181,7 @@
           data: {
             url: this.repoAddress + '/commits?per_page=100'
           },
-          success: function(data) {
+          success: function (data) {
             console.log(data)
           }
         })
@@ -212,7 +215,7 @@
         $.ajax({
           url: '/issue/get-solveTime-avg',
           methods: 'get',
-          success: function(data) {
+          success: function (data) {
             vm.issueTimeAVG = data;
             console.log("Average issue time: " + vm.issueTimeAVG + " days")
           }
@@ -223,7 +226,7 @@
         $.ajax({
           url: '/issue/get-solveTime-max',
           methods: 'get',
-          success: function(data) {
+          success: function (data) {
             vm.issueTimeMAX = data;
             console.log("Max issue time: " + vm.issueTimeMAX + " days")
           }
@@ -234,7 +237,7 @@
         $.ajax({
           url: '/issue/get-solveTime-stddev',
           methods: 'get',
-          success: function(data) {
+          success: function (data) {
             vm.issueTimeSTDDEV = data;
             console.log("Standard deviation of Issue time: " + vm.issueTimeSTDDEV)
           }
@@ -248,8 +251,8 @@
           url: '/commit/get-date-commitNum',
           methods: 'get',
           // async: false,
-          success: function(data) {
-            $.each(data, function(index, item) {
+          success: function (data) {
+            $.each(data, function (index, item) {
               dates.push(item.commit_date);
               commitNums.push(item.commitNum);
             });
@@ -265,13 +268,14 @@
           url: '/commit/get-developer-commitNum',
           methods: 'get',
           // async: false,
-          success: function(data) {
-            $.each(data, function(index, item) {
+          success: function (data) {
+            $.each(data, function (index, item) {
               developers.push(item.developer);
               commitNums.push(item.commitNum);
             });
             vm.developers = developers.length;
-            setChart("top_developers", developers, commitNums, "developer与commit数量的关系", 0, "开发者", "commit数量");
+            setChart("top_developers", developers, commitNums, "developer与commit数量的关系", 0, "开发者",
+                "commit数量");
           }
         })
       },
@@ -281,7 +285,7 @@
           url: '/release/get-releases',
           methods: 'get',
           // async: false,
-          success: function(data) {
+          success: function (data) {
             vm.releases = data;
             console.log("releases: " + data);
           }
@@ -294,13 +298,13 @@
         $.ajax({
           url: '/release/get-commits-preRelease',
           methods: 'get',
-          success: function(data) {
-            $.each(data, function(index, item) {
+          success: function (data) {
+            $.each(data, function (index, item) {
               releases.push(item.releaseId);
               commitNums.push(item.commitNum);
             });
             setChart("commits_before_release", releases, commitNums, "release之前的新增commit数量", 0,
-                    "release的id", "之前更新的commit数量");
+                "release的id", "之前更新的commit数量");
           }
         })
       }
@@ -314,14 +318,14 @@
       title: {
         text: title
       },
-      series : [
+      series: [
         {
           type: 'pie',
           radius: '55%',
           roseType: 'angle',
-          data:[
-            {value: a_data, name:'open issue的数量: ' + a_data},
-            {value: b_data, name:'closed issue的数量: ' + b_data}
+          data: [
+            {value: a_data, name: 'open issue的数量: ' + a_data},
+            {value: b_data, name: 'closed issue的数量: ' + b_data}
           ]
         }
       ]

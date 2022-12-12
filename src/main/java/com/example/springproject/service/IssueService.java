@@ -6,13 +6,13 @@ import java.util.List;
 
 public interface IssueService {
 
-    int getIssueByState(String state);
+  int getIssueByState(String state);
 
-    void insertIssues(List<Issue> issues);
+  void insertIssues(List<Issue> issues);
 
-    double getSolveTimeAVG();
+  double getSolveTimeAVG();
 
-    double getSolveTimeMAX();
+  double getSolveTimeMAX();
 
-    double getSolveTimeSTDDEV();
+  double getSolveTimeSTDDEV();
 }

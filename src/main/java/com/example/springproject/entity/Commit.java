@@ -7,8 +7,9 @@ import java.sql.Timestamp;
 
 @Data
 public class Commit {
-    private String sha;
-    private Date commit_date;
-    private String developer;
-    private Timestamp commit_time;
+
+  private String sha;
+  private Date commit_date;
+  private String developer;
+  private Timestamp commit_time;
 }

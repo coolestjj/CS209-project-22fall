@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class DeveloperAndCommitNum {
-    private String developer;
-    private int commitNum;
+
+  private String developer;
+  private int commitNum;
 }

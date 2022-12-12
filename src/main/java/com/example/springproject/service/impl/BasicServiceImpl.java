@@ -8,11 +8,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class BasicServiceImpl implements BasicService {
 
-    @Autowired
-    private BasicMapper basicMapper;
+  @Autowired
+  private BasicMapper basicMapper;
 
-    @Override
-    public void truncateTable(String tableName) {
-        basicMapper.truncateTables(tableName);
-    }
+  @Override
+  public void truncateTable(String tableName) {
+    basicMapper.truncateTables(tableName);
+  }
 }

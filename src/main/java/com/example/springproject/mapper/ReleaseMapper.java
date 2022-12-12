@@ -10,9 +10,10 @@ import java.util.List;
 @Mapper
 @Repository
 public interface ReleaseMapper {
-    void insertReleases(List<Release> releases);
 
-    int getReleases();
+  void insertReleases(List<Release> releases);
 
-    List<ReleaseAndCommitNum> getCommitsBeforeReleases();
+  int getReleases();
+
+  List<ReleaseAndCommitNum> getCommitsBeforeReleases();
 }

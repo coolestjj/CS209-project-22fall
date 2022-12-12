@@ -1,29 +1,31 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!--namespace=绑定一个对应的Dao/Mapper接口-->
 <mapper namespace="com.example.springproject.mapper.ReleaseMapper">
 
-    <!--批量插入语句-->
-    <insert id="insertReleases">
-        insert into ljjcjava2.`release` (id, publish_time) values
-        <foreach item="release" collection="list" separator=",">
-            (#{release.id}, #{release.publish_time})
-        </foreach>
-    </insert>
+  <!--批量插入语句-->
+  <insert id="insertReleases">
+    insert into ljjcjava2.`release` (id, publish_time) values
+    <foreach item="release" collection="list" separator=",">
+      (#{release.id}, #{release.publish_time})
+    </foreach>
+  </insert>
 
-    <select id="getReleases" resultType="int">
-        select count(*) from ljjcjava2.release;
-    </select>
+  <select id="getReleases" resultType="int">
+    select count(*)
+    from ljjcjava2.release;
+  </select>
 
-    <select id="getCommitsBeforeReleases" resultType="com.example.springproject.entity.ReleaseAndCommitNum">
-        select releaseId, count(commit_time) as commitNum
-        from (select commit_time, publish_time, `release`.id as releaseId
-        from ljjcjava2.commit
-        join ljjcjava2.`release`) as a
-        where commit_time <![CDATA[<]]> publish_time
-        group by a.publish_time
-    </select>
+  <select id="getCommitsBeforeReleases"
+    resultType="com.example.springproject.entity.ReleaseAndCommitNum">
+    select releaseId, count(commit_time) as commitNum
+    from (select commit_time, publish_time, `release`.id as releaseId
+          from ljjcjava2.commit
+                 join ljjcjava2.`release`) as a
+    where commit_time <![CDATA[<]]> publish_time
+    group by a.publish_time
+  </select>
 
 </mapper>

@@ -8,9 +8,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @MapperScan(value = "com.example.springproject.dao")
 public class SpringprojectApplication {
 
-	public static void main(String[] args) {
+  public static void main(String[] args) {
 
-		SpringApplication.run(SpringprojectApplication.class, args);
-	}
+    SpringApplication.run(SpringprojectApplication.class, args);
+  }
 
 }

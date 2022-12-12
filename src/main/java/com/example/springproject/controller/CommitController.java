@@ -25,66 +25,66 @@ import java.util.List;
 @RequestMapping("/commit")
 public class CommitController {
 
-    @Autowired
-    private CommitService commitService;
+  @Autowired
+  private CommitService commitService;
 
-    @GetMapping("/store-commits")
-    public String storeCommits(@RequestParam String url) throws IOException {
-        List<Commit> commits = getRawJson(url);
-        if (commits.size() != 0) {
-            commitService.insertCommits(getRawJson(url));
-            return "Commits stored";
-        }
-        return "No commit";
+  @GetMapping("/store-commits")
+  public String storeCommits(@RequestParam String url) throws IOException {
+    List<Commit> commits = getRawJson(url);
+    if (commits.size() != 0) {
+      commitService.insertCommits(getRawJson(url));
+      return "Commits stored";
     }
+    return "No commit";
+  }
 
-    @GetMapping("/get-date-commitNum")
-    public List<DateAndCommitNum> getCommitNumByTime() {
-        return commitService.getCommitNumByTime();
+  @GetMapping("/get-date-commitNum")
+  public List<DateAndCommitNum> getCommitNumByTime() {
+    return commitService.getCommitNumByTime();
+  }
+
+  @GetMapping("/get-developer-commitNum")
+  public List<DeveloperAndCommitNum> getCommitNumByDeveloper() {
+    return commitService.getCommitNumByDeveloper();
+  }
+
+  public List<Commit> getRawJson(String url) throws IOException {
+    int pageNum = 0;
+    String rawJson = "";
+    List<Commit> commits = new ArrayList<>();
+
+    while (!rawJson.equals("[]")) {
+      pageNum++;
+      String urlWithPage = url + "&page=" + pageNum;
+
+      URL restURL = new URL(urlWithPage);
+
+      HttpURLConnection conn = (HttpURLConnection) restURL.openConnection();
+
+      conn.setRequestMethod("GET"); // POST GET PUT DELETE
+      // Bearer后面为授权用的github token，请改成自己用的
+      conn.setRequestProperty("authorization", "Bearer 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");
+      conn.setRequestProperty("Accept", "vnd.github+json");
+
+      BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+      rawJson = br.readLine();
+      br.close();
+      JSONArray jsonArray = JSON.parseArray(rawJson);
+
+      for (int i = 0; i < jsonArray.size(); i++) {
+        JSONObject jsonObject = jsonArray.getJSONObject(i);
+        Commit commit = new Commit();
+        commit.setSha(jsonObject.getString("sha"));
+        commit.setDeveloper(jsonObject.getJSONObject("commit")
+            .getJSONObject("author").getString("name"));
+        commit.setCommit_date(jsonObject.getJSONObject("commit")
+            .getJSONObject("author").getSqlDate("date"));
+        commit.setCommit_time(jsonObject.getJSONObject("commit")
+            .getJSONObject("author").getTimestamp("date"));
+        commits.add(commit);
+      }
     }
-
-    @GetMapping("/get-developer-commitNum")
-    public List<DeveloperAndCommitNum> getCommitNumByDeveloper() {
-        return commitService.getCommitNumByDeveloper();
-    }
-
-    public List<Commit> getRawJson(String url) throws IOException {
-        int pageNum = 0;
-        String rawJson = "";
-        List<Commit> commits = new ArrayList<>();
-
-        while(!rawJson.equals("[]")) {
-            pageNum++;
-            String urlWithPage = url + "&page="+ pageNum;
-
-            URL restURL = new URL(urlWithPage);
-
-            HttpURLConnection conn = (HttpURLConnection) restURL.openConnection();
-
-            conn.setRequestMethod("GET"); // POST GET PUT DELETE
-            // Bearer后面为授权用的github token，请改成自己用的
-            conn.setRequestProperty("authorization", "Bearer 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");
-            conn.setRequestProperty("Accept", "vnd.github+json");
-
-            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            rawJson = br.readLine();
-            br.close();
-            JSONArray jsonArray = JSON.parseArray(rawJson);
-
-            for (int i = 0; i < jsonArray.size(); i++) {
-                JSONObject jsonObject = jsonArray.getJSONObject(i);
-                Commit commit = new Commit();
-                commit.setSha(jsonObject.getString("sha"));
-                commit.setDeveloper(jsonObject.getJSONObject("commit")
-                        .getJSONObject("author").getString("name"));
-                commit.setCommit_date(jsonObject.getJSONObject("commit")
-                        .getJSONObject("author").getSqlDate("date"));
-                commit.setCommit_time(jsonObject.getJSONObject("commit")
-                        .getJSONObject("author").getTimestamp("date"));
-                commits.add(commit);
-            }
-        }
-        System.out.println(commits.size());
-        return commits;
-    }
+    System.out.println(commits.size());
+    return commits;
+  }
 }

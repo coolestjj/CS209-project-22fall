@@ -23,77 +23,78 @@ import java.util.List;
 @RestController
 @RequestMapping("/release")
 public class ReleaseController {
-    @Autowired
-    private ReleaseService releaseService;
 
-    @GetMapping("/store-releases")
-    public String storeReleases(@RequestParam String url) throws IOException {
-        List<Release> releases = getRawJson(url);
-        if (releases.size() != 0) {
-            releaseService.insertReleases(releases);
-            return "Releases stored";
-        }
-        return "No Release";
+  @Autowired
+  private ReleaseService releaseService;
+
+  @GetMapping("/store-releases")
+  public String storeReleases(@RequestParam String url) throws IOException {
+    List<Release> releases = getRawJson(url);
+    if (releases.size() != 0) {
+      releaseService.insertReleases(releases);
+      return "Releases stored";
     }
+    return "No Release";
+  }
 
-    @GetMapping("/get-releases")
-    public int getReleases() {
-        return releaseService.getReleases();
+  @GetMapping("/get-releases")
+  public int getReleases() {
+    return releaseService.getReleases();
+  }
+
+  @GetMapping("/get-commits-preRelease")
+  public List<ReleaseAndCommitNum> getCommitsBeforeReleases() {
+    List<ReleaseAndCommitNum> initialList = releaseService.getCommitsBeforeReleases();
+    List<ReleaseAndCommitNum> resultList = new ArrayList<>();
+    for (int i = 0; i < initialList.size(); i++) {
+      ReleaseAndCommitNum releaseAndCommitNum;
+      if (i == 0) {
+        releaseAndCommitNum = new ReleaseAndCommitNum();
+        releaseAndCommitNum.setReleaseId(initialList.get(i).getReleaseId());
+        releaseAndCommitNum.setCommitNum(initialList.get(i).getCommitNum());
+      } else {
+        releaseAndCommitNum = new ReleaseAndCommitNum();
+        releaseAndCommitNum.setCommitNum(
+            initialList.get(i).getCommitNum() - initialList.get(i - 1).getCommitNum());
+        releaseAndCommitNum.setReleaseId(initialList.get(i).getReleaseId());
+      }
+      resultList.add(releaseAndCommitNum);
     }
+    return resultList;
+  }
 
-    @GetMapping("/get-commits-preRelease")
-    public List<ReleaseAndCommitNum> getCommitsBeforeReleases() {
-        List<ReleaseAndCommitNum> initialList = releaseService.getCommitsBeforeReleases();
-        List<ReleaseAndCommitNum> resultList = new ArrayList<>();
-        for (int i = 0; i < initialList.size(); i++) {
-            ReleaseAndCommitNum releaseAndCommitNum;
-            if (i == 0) {
-                releaseAndCommitNum = new ReleaseAndCommitNum();
-                releaseAndCommitNum.setReleaseId(initialList.get(i).getReleaseId());
-                releaseAndCommitNum.setCommitNum(initialList.get(i).getCommitNum());
-            }
-            else {
-                releaseAndCommitNum = new ReleaseAndCommitNum();
-                releaseAndCommitNum.setCommitNum(initialList.get(i).getCommitNum() - initialList.get(i - 1).getCommitNum());
-                releaseAndCommitNum.setReleaseId(initialList.get(i).getReleaseId());
-            }
-            resultList.add(releaseAndCommitNum);
-        }
-        return resultList;
+  public List<Release> getRawJson(String url) throws IOException {
+    int pageNum = 0;
+    String rawJson = "";
+    List<Release> releases = new ArrayList<>();
+
+    while (!rawJson.equals("[]")) {
+      pageNum++;
+      String urlWithPage = url + "&page=" + pageNum;
+
+      URL restURL = new URL(urlWithPage);
+
+      HttpURLConnection conn = (HttpURLConnection) restURL.openConnection();
+
+      conn.setRequestMethod("GET"); // POST GET PUT DELETE
+      // Bearer后面为授权用的github token，请改成自己用的
+      conn.setRequestProperty("authorization", "Bearer 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");
+      conn.setRequestProperty("Accept", "vnd.github+json");
+
+      BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+      rawJson = br.readLine();
+      br.close();
+      JSONArray jsonArray = JSON.parseArray(rawJson);
+
+      for (int i = 0; i < jsonArray.size(); i++) {
+        JSONObject jsonObject = jsonArray.getJSONObject(i);
+        Release release = new Release();
+        release.setId(jsonObject.getIntValue("id"));
+        release.setPublish_time(jsonObject.getTimestamp("published_at"));
+        releases.add(release);
+      }
     }
-
-    public List<Release> getRawJson(String url) throws IOException {
-        int pageNum = 0;
-        String rawJson = "";
-        List<Release> releases = new ArrayList<>();
-
-        while(!rawJson.equals("[]")) {
-            pageNum++;
-            String urlWithPage = url + "&page="+ pageNum;
-
-            URL restURL = new URL(urlWithPage);
-
-            HttpURLConnection conn = (HttpURLConnection) restURL.openConnection();
-
-            conn.setRequestMethod("GET"); // POST GET PUT DELETE
-            // Bearer后面为授权用的github token，请改成自己用的
-            conn.setRequestProperty("authorization", "Bearer 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");
-            conn.setRequestProperty("Accept", "vnd.github+json");
-
-            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            rawJson = br.readLine();
-            br.close();
-            JSONArray jsonArray = JSON.parseArray(rawJson);
-
-            for (int i = 0; i < jsonArray.size(); i++) {
-                JSONObject jsonObject = jsonArray.getJSONObject(i);
-                Release release = new Release();
-                release.setId(jsonObject.getIntValue("id"));
-                release.setPublish_time(jsonObject.getTimestamp("published_at"));
-                releases.add(release);
-            }
-        }
-        System.out.println(releases.size());
-        return releases;
-    }
+    System.out.println(releases.size());
+    return releases;
+  }
 }

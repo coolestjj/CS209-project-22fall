@@ -15,9 +15,9 @@ import java.util.Map;
 @Repository
 public interface CommitMapper {
 
-    void insertCommits(List<Commit> Commits);
+  void insertCommits(List<Commit> Commits);
 
-    List<DateAndCommitNum> getCommitNumByTime();
+  List<DateAndCommitNum> getCommitNumByTime();
 
-    List<DeveloperAndCommitNum> getCommitNumByDeveloper();
+  List<DeveloperAndCommitNum> getCommitNumByDeveloper();
 }

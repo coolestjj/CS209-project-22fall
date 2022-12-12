@@ -13,22 +13,24 @@ import java.util.List;
 @Service
 public class CommitServiceImpl implements CommitService {
 
-    @Autowired
-    private CommitMapper commitMapper;
+  @Autowired
+  private CommitMapper commitMapper;
 
-    @Override
-    public void insertCommits(List<Commit> Commits) {
-        commitMapper.insertCommits(Commits);
-    }
+  @Override
+  public void insertCommits(List<Commit> Commits) {
+    commitMapper.insertCommits(Commits);
+  }
 
-    @Override
-    public List<DateAndCommitNum> getCommitNumByTime() {
-        return commitMapper.getCommitNumByTime();
-    }
+  @Override
+  public List<DateAndCommitNum> getCommitNumByTime() {
+    return commitMapper.getCommitNumByTime();
+  }
 
-    @Override
-    public List<DeveloperAndCommitNum> getCommitNumByDeveloper() {
-        return commitMapper.getCommitNumByDeveloper();
-    };
+  @Override
+  public List<DeveloperAndCommitNum> getCommitNumByDeveloper() {
+    return commitMapper.getCommitNumByDeveloper();
+  }
+
+  ;
 
 }

@@ -6,6 +6,7 @@ import java.sql.Timestamp;
 
 @Data
 public class Release {
-    private Timestamp publish_time;
-    private int id;
+
+  private Timestamp publish_time;
+  private int id;
 }
