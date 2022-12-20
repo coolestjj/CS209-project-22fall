@@ -7,7 +7,9 @@ import com.example.springproject.entity.Commit;
 import com.example.springproject.entity.DateAndCommitNum;
 import com.example.springproject.entity.DeveloperAndCommitNum;
 import com.example.springproject.service.CommitService;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,8 +21,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/commit")
 public class CommitController {
@@ -63,7 +65,7 @@ public class CommitController {
 
       conn.setRequestMethod("GET"); // POST GET PUT DELETE
       // Bearer后面为授权用的github token，请改成自己用的
-      conn.setRequestProperty("authorization", "Bearer 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");
+      conn.setRequestProperty("authorization", "Bearer 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");
       conn.setRequestProperty("Accept", "vnd.github+json");
 
       BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));

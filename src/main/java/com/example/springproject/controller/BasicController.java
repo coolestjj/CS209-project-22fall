@@ -4,6 +4,7 @@ import com.example.springproject.service.BasicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/basic")
 public class BasicController {
